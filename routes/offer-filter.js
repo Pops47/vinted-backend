@@ -3,7 +3,7 @@ const router = express.Router();
 const Offer = require("../models/Offer");
 const mongoose = require("mongoose");
 
-mongoose.connect("mongodb://localhost/vinted");
+mongoose.connect(process.env.MONGODB_URI);
 
 // Route avec filtres
 router.get("/offers", async (req, res) => {
@@ -29,11 +29,9 @@ router.get("/offers", async (req, res) => {
     if (req.query.page) {
       //on vérifier que le nombre de page existe et qu'il est bien > 0
       if (req.query.page < 1) {
-        res
-          .status(400)
-          .json({
-            message: "Le numéro de page doit être supérieur ou égal à 1",
-          });
+        res.status(400).json({
+          message: "Le numéro de page doit être supérieur ou égal à 1",
+        });
       } else {
         currentPage = req.query.page; // paramètre qui sera utilisé dans la fonction skip
       }
