@@ -3,8 +3,6 @@ const router = express.Router();
 const Offer = require("../models/Offer");
 const mongoose = require("mongoose");
 
-mongoose.connect(process.env.MONGODB_URI);
-
 // Route avec filtres
 router.get("/offers", async (req, res) => {
   try {

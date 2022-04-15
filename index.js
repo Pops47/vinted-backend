@@ -9,6 +9,11 @@ app.use(formidable());
 
 mongoose.connect(process.env.MONGODB_URI);
 
+app.get("/", (req, res) => {
+  res.status(200).json({
+    message: "Welcome to Vinted backend on Heroku server",
+  });
+});
 // Import routes
 const userRoutes = require("./routes/user"); // signUp and Login
 app.use(userRoutes);
