@@ -7,9 +7,7 @@ const cors = require("cors");
 app.use(cors());
 app.use(formidable());
 
-mongoose.connect("mongodb://localhost:3000");
-
-// process.env.MONGODB_URI
+mongoose.connect("process.env.MONGODB_URI");
 
 app.get("", (req, res) => {
   res.status(200).json({
