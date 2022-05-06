@@ -7,9 +7,11 @@ const cors = require("cors");
 app.use(cors());
 app.use(formidable());
 
-mongoose.connect(process.env.MONGODB_URI);
+mongoose.connect("mongodb://localhost:3000");
 
-app.get("/", (req, res) => {
+// process.env.MONGODB_URI
+
+app.get("", (req, res) => {
   res.status(200).json({
     message: "Welcome to Vinted backend on Heroku server",
   });
