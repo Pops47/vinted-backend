@@ -30,9 +30,10 @@ app.use(offerDelete);
 const offerFindByIdRoute = require("./routes/offer-find-by-id"); // Search an offer with filters
 app.use(offerFindByIdRoute);
 
-app.post("/pay", async (req, res) => {
+app.post("/payment", async (req, res) => {
   // Réception du token créer via l'API Stripe depuis le Frontend
   const stripeToken = req.fields.stripeToken;
+
   // Créer la transaction
   const response = await stripe.charges.create({
     amount: 100,
