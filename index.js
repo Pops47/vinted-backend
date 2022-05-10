@@ -4,6 +4,7 @@ const formidable = require("express-formidable");
 const app = express();
 const mongoose = require("mongoose");
 const cors = require("cors");
+const stripe = require("stripe")(process.env.STRIPE_API_SECRET);
 app.use(cors());
 app.use(formidable());
 
@@ -28,6 +29,25 @@ const offerDelete = require("./routes/offer-delete"); //Delete offer
 app.use(offerDelete);
 const offerFindByIdRoute = require("./routes/offer-find-by-id"); // Search an offer with filters
 app.use(offerFindByIdRoute);
+
+app.post("/pay", async (req, res) => {
+  // Réception du token créer via l'API Stripe depuis le Frontend
+  const stripeToken = req.fields.stripeToken;
+  // Créer la transaction
+  const response = await stripe.charges.create({
+    amount: 100,
+    currency: "eur",
+    description: "Très bel objet",
+    // On envoie ici le token
+    source: stripeToken,
+  });
+  console.log(response.status);
+
+  // TODO
+  // Sauvegarder la transaction dans une BDD MongoDB
+
+  res.json(response);
+});
 
 app.all("*", (req, res) => {
   res.status(404).send("Page introuvable");
