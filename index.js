@@ -8,11 +8,11 @@ const stripe = require("stripe")(process.env.STRIPE_API_SECRET);
 app.use(cors());
 app.use(formidable());
 
-mongoose.connect(process.env.MONGODB_URI);
+mongoose.connect(process.env.MONGODB_URL);
 
 app.get("", (req, res) => {
   res.status(200).json({
-    message: "Welcome to Vinted backend on Heroku server",
+    message: "Welcome to Vinted backend",
   });
 });
 // Import routes
@@ -21,31 +21,34 @@ app.use(userRoutes);
 
 const offerPublishRoute = require("./routes/offer-publish"); // Publish an offer
 app.use(offerPublishRoute);
+
 const offerFilterRoute = require("./routes/offer-filter"); // Search an offer with filters
 app.use(offerFilterRoute);
+
 // const offerUpdate = require("./routes/offer-update"); //Update offer (pas terminée)
 // app.use(offerUpdate);
+
 const offerDelete = require("./routes/offer-delete"); //Delete offer
 app.use(offerDelete);
-const offerFindByIdRoute = require("./routes/offer-find-by-id"); // Search an offer with filters
+
+const offerFindByIdRoute = require("./routes/offer-find-by-id"); // Search an offer by id
 app.use(offerFindByIdRoute);
 
 app.post("/payment", async (req, res) => {
+  console.log(req.body);
   // Réception du token créer via l'API Stripe depuis le Frontend
   const stripeToken = req.fields.stripeToken;
-
-  // Créer la transaction
+  // Création de la transaction
   const response = await stripe.charges.create({
     amount: 100,
     currency: "eur",
     description: "Très bel objet",
-    // On envoie ici le token
     source: stripeToken,
   });
   console.log(response.status);
 
   // TODO
-  // Sauvegarder la transaction dans une BDD MongoDB
+  // Sauvegarder la transaction dans la bdd
 
   res.json(response);
 });
